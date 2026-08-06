@@ -13,7 +13,7 @@ rem some corporate PCs block via Group Policy if the file isn't signed),
 rem we read its text and run it as a scriptblock. This does the exact
 rem same thing but is not subject to that file-signing check, and needs
 rem no admin rights or system setting changes.
-powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -Command "$ErrorActionPreference='Stop'; try { $code = Get-Content -Raw -LiteralPath '%~dp0serve.ps1'; $sb = [ScriptBlock]::Create($code); & $sb -Port %PORT% } catch { Write-Host ''; Write-Host 'Failed to start the server:' -ForegroundColor Red; Write-Host $_.Exception.Message -ForegroundColor Red; Read-Host 'Press Enter to close this window' }"
+powershell -NoProfile -NoLogo -ExecutionPolicy Bypass -Command "$ErrorActionPreference='Stop'; try { $code = Get-Content -Raw -LiteralPath '%~dp0serve.ps1'; $sb = [ScriptBlock]::Create($code); & $sb -Port %PORT% -ScriptRoot '%~dp0' } catch { Write-Host ''; Write-Host 'Failed to start the server:' -ForegroundColor Red; Write-Host $_.Exception.Message -ForegroundColor Red; Read-Host 'Press Enter to close this window' }"
 
 echo.
 pause

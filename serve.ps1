@@ -1,9 +1,16 @@
 param(
-    [int]$Port = 8000
+    [int]$Port = 8000,
+    # Folder this script lives in. Normally auto-detected via $PSScriptRoot,
+    # but when serve.bat runs this script's text as a dynamically-created
+    # scriptblock (to dodge Group-Policy-locked execution policy - see
+    # serve.bat), $PSScriptRoot comes back EMPTY because there's no real
+    # script file behind it. serve.bat passes its own folder in explicitly
+    # to work around that.
+    [string]$ScriptRoot
 )
 
 $ErrorActionPreference = 'Stop'
-$root = $PSScriptRoot
+$root = if ($ScriptRoot) { $ScriptRoot } elseif ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
 
 function Wait-BeforeClose {
     Write-Host ""
